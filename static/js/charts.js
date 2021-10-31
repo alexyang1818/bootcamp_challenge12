@@ -76,7 +76,8 @@ function buildCharts(sample) {
             text.push(reversedResult[i].otu_label);
         }
         
-        let trace = {
+        // plot bar graph
+        let traceBar = {
             x: x,
             y: y,
             text: text,
@@ -84,12 +85,62 @@ function buildCharts(sample) {
             orientation: 'h'
         };
 
-        let barData = [trace];
+        let dataBar = [traceBar];
 
-        let layout = {
+        let layoutBar = {
             title: 'Top 10 Bacteria Cultures Found'
         }
 
-        Plotly.newPlot('bar', barData, layout);
+        Plotly.newPlot('bar', dataBar, layoutBar);
+
+        // plot gauge graph
+        let traceGauge =   {
+            domain: { x: [0, 1], y: [0, 1] },
+            value: data.metadata.filter(sampleObj => sampleObj.id == sample)[0].wfreq,
+            title: { text: 'Belly Button Washing Frequency'.bold() + '<br>' + 'Scrubs per Week'},
+            type: "indicator",
+            mode: "gauge+number",
+            gauge: {
+                bar: {color: 'black'},
+                axis: {
+                    range: [null, 10],
+                    tickvals: [0, 2, 4, 6, 8, 10]
+                },
+                steps: [
+                    { range: [0, 2], color: "red" },
+                    { range: [2, 4], color: "orange" },
+                    { range: [4, 6], color: "yellow" },
+                    { range: [6, 8], color: "lightgreen" },
+                    { range: [8, 10], color: "green" }
+                ],
+            }
+        }
+
+        let dataGauge = [traceGauge];
+
+        Plotly.newPlot('gauge', dataGauge);
+        
+
+        // plot bubble graph
+        let traceBubble = {
+            x: result.otu_ids,
+            y: xAll,
+            mode: 'markers',
+            text: textAll,
+            marker: {
+                size: xAll,
+                color: result.otu_ids,
+                colorscale: result.otu_ids
+            }
+        }
+
+        let dataBubble = [traceBubble];
+
+        let layoutBubble = {
+            title: 'Bateria Cultures Per Sample',
+            xaxis: {title:'OTU ID'}
+        }
+
+        Plotly.newPlot('bubble', dataBubble, layoutBubble);
     })
 }

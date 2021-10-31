@@ -1,0 +1,13 @@
+body {
+    background-color: lightgrey;
+}
+
+/* p {
+    font-size: xx-large;
+  } */
+
+.jumbotron {
+    background-image: url('../images/belly_button.jpg');
+    background-size:100% 100%;
+    text-align: center;
+}
